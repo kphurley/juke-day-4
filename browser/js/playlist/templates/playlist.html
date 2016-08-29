@@ -1,0 +1,49 @@
+<div>
+  <h3>{{ playlist.name }}</h3>
+
+  <h2>Add to Playlist</h2>
+  <form name="addSongForm" novalidate>
+    <div class="col-lg-6 col-sm-8">
+    <label for="songSelect">Song</label>
+      <select
+        name="songSelect"
+        class="form-control"
+        ng-options="song as song.name for song in songs track by song.id"
+        ng-model="selected"
+        required>
+      </select>
+      <button
+        class="btn btn-success"
+        ng-click="addSong(selected)"
+        ng-disabled="addSongForm.$invalid"
+        >
+        Add Song
+        </button>
+      </div>
+    </form>
+  <table class='table' ng-show="playlist.songs.length">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Artists</th>
+        <th>Genres</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="song in playlist.songs" ng-class="{active: song === getCurrentSong() }">
+        <td>
+          <button class="btn btn-default btn-xs" ng-click="toggle(song)">
+            <span class="glyphicon" ng-class="{ 'glyphicon-pause': isPlaying(song), 'glyphicon-play': !isPlaying(song) }"></span>
+          </button>
+        </td>
+        <td>{{ song.name }}</td>
+        <td><span ng-repeat="artist in song.artists">{{ artist.name }}{{ $last ? '' : ', ' }}</span></td>
+        <td>{{ song.genres.join(', ') }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <small ng-hide="playlist.songs.length">No songs.</small>
+  <hr>
+</div>
